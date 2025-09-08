@@ -90,7 +90,7 @@ app.post('/users/login', async (req, res) => {
 });
 
 // get user gift list
-app.get('/users/:id', authToken, async (req, res) => {
+app.get('/users/:id/gifts', authToken, async (req, res) => {
     try {
         const user = await User.findById(req.params.id, 'gifts');
         if (!user) {
@@ -103,7 +103,7 @@ app.get('/users/:id', authToken, async (req, res) => {
 });
 
 // add gift to list
-app.post('/users/:id', authToken, async (req, res) => {
+app.post('/users/:id/gifts', authToken, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
