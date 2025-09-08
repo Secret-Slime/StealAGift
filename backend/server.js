@@ -6,7 +6,6 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import bycrypt from 'bcryptjs';
 import User from './models/user.model.js';
-import Gift from './models/gift.model.js';
 
 
 // load enviroment variables
@@ -47,7 +46,7 @@ function authToken(req, res, next) {
     })
 };
 
-// API Routes
+// API CRUD endpoints
 
 // User registration
 app.post('/users/register', async (req, res) => {
@@ -90,5 +89,80 @@ app.post('/users/login', async (req, res) => {
 
 });
 
+// get user gift list
+app.get('/users/:id', authToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id, 'gifts');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user.gifts); 
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users', error: error.message });
+    }
+});
 
+// add gift to list
+app.post('/users/:id', authToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.gifts.push(req.body);
+        await user.save();
+        res.status(200).json({ message: 'Gift added successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding gift', error: error.message });
+    }
+});
+
+// delete gift from list
+app.delete('/users/:id/:giftId', authToken, async (req, res) => {
+    try {
+        const user = await user.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.gifts = user.gifts.filter(gift => gift.id !== req.params.giftId);
+        await user.save();
+        res.status(200).json({ message: 'Gift deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting gift', error: error.message });
+    }
+});
+
+// update gift in list
+app.put('/users/:id/:giftId', authToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const giftIndex = user.gifts.findIndex(gift => gift.id === req.params.giftId);
+        if (giftIndex === -1) {
+            return res.status(404).json({ message: 'Gift not found' });
+        }
+        user.gifts[giftIndex] = req.body;
+        await user.save();
+        res.status(200).json({ message: 'Gift updated successfully' });
+    } catch (error) {
+
+    }
+});
+
+// set gift receiver
+app.put('/users/:id/receiver', authToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        user.receiver = req.body.receiver;
+        await user.save();
+        res.status(200).json({ message: 'Receiver set successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error setting receiver', error: error.message });
+    }
+});
 

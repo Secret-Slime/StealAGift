@@ -14,6 +14,13 @@ const userSchema = new mongoose.Schema({
         required: true, 
         unique: true 
     },
+    receiver: {
+        type: String,
+    },
+    gifts: {
+        type: Array,
+        default: []
+    },
     createdAt: { 
         type: Date, 
         default: Date.now 
