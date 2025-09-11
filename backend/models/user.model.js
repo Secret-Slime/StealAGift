@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         required: true, 
         unique: true 
     },
+    picked: {
+        type: Boolean,
+        default: false
+    },
     receiver: {
         type: String,
     },

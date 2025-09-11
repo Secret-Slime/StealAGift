@@ -5,6 +5,11 @@ function getToken() {
     return localStorage.getItem('token');
 }
 
+//get user ID from local storage
+export async function getUserId() {
+    return localStorage.getItem('userId');
+}
+
 export async function registerUser(username, email, password) {
     const response = await fetch(`${URL}/users/register`, {
         method: 'POST',
