@@ -25,3 +25,22 @@ export async function pickReciever() {
         return res.status(500).json({ message: 'Error fetching users', error: error.message });
     }
 }
+
+
+// Registration and login validation
+
+export function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+}
+
+export function validatePassword(password) {
+    // Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
+    const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return re.test(String(password));
+}
+export function validateUsername(username) {
+    // Minimum three characters, only letters, numbers, underscores, and hyphens
+    const re = /^[a-zA-Z0-9_-]{3,}$/;
+    return re.test(String(username));
+}
