@@ -50,3 +50,15 @@ let registrationFormHTML = `
         <button type="submit">Register</button>
     </form>
 `;
+
+// html dropdown gifts
+let giftsHTML = `
+    <div class="dropdown">
+        <p class="dropDownText">// giftName</p>
+        <div class="dropdown-content">
+            <p>// description</p>
+            <p>// price</p>
+            <a href="// link" target="_blank">Link</a>
+        </div>
+    </div>
+`;
