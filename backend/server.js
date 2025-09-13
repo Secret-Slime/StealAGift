@@ -83,7 +83,7 @@ app.post('/users/login', async (req, res) => {
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
     // Token generation
-    const accessToken = jwt.sign({ username: user.username, _id: true }, process.env.ACCESS_TOKEN_SECRET);
+    const accessToken = jwt.sign({ username: user.username, _id: true, receiver: true }, process.env.ACCESS_TOKEN_SECRET);
     res.json({ accessToken: accessToken })
     // Refresh functionality to be added later
 });

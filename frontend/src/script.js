@@ -1,4 +1,5 @@
-
+import { addGift, getUserId } from './storage.js';
+import { Gift, renderGift } from './gift.js';
 
 //html gift form
 let giftFormHTML = `
@@ -51,14 +52,52 @@ let registrationFormHTML = `
     </form>
 `;
 
-// html dropdown gifts
-let giftsHTML = `
-    <div class="dropdown">
-        <p class="dropDownText">// giftName</p>
-        <div class="dropdown-content">
-            <p>// description</p>
-            <p>// price</p>
-            <a href="// link" target="_blank">Link</a>
-        </div>
-    </div>
-`;
+// load gift form and handle submission
+export async function loadGiftForm() {
+    document.getElementById('app').innerHTML = giftFormHTML;
+    document.getElementById('giftForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('giftName').value;
+        const description = document.getElementById('description').value;
+        const price = document.getElementById('price').value;
+        const link = document.getElementById('link').value;
+        const gift = new Gift(name, description, price, link);
+        try {
+            const userId = getUserId();
+            await addGift(userId, gift);
+            alert('Gift added successfully');
+            document.getElementById('giftForm').reset();
+            await renderGift(gift);
+        } catch (error) {
+            alert('Error adding gift: ' + error.message);
+            console.error('Error adding gift:', error);
+        }
+    });
+};
+
+// load login form and handle submission
+export async function loadLoginForm() {
+    document.getElementById('app').innerHTML = loginFormHTML;
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        try {
+            const response = await loginUser(username, password);
+            localStorage.setItem('userId', response.userId);
+            let receiverStatus = localStorage.getItem('reciever');
+            alert('Login successful');
+            // redirect to receiver page or gift form after login
+            if (receiverStatus === 'null') {
+                // load reciever page if no reciever is defined
+            }
+            else {
+                // load gift form if reciever is defined
+                loadGiftForm();
+            }
+        } catch (error) {
+            alert('Error logging in: ' + error.message);
+            console.error('Error logging in:', error);
+        }
+    });    
+};

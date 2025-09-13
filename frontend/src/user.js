@@ -26,9 +26,7 @@ export async function pickReciever() {
     }
 }
 
-
 // Registration and login validation
-
 export function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());

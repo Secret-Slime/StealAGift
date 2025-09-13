@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     receiver: {
         type: String,
+        default: null
     },
     gifts: {
         type: Array,
