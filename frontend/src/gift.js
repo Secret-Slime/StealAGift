@@ -8,8 +8,8 @@ export class Gift {
     }
 };
 
-// format and render gift drowpdown cards
-export function renderGift(Gift) {
+// format and render gift drowpdown cards for the reciever view
+export function renderRecieverGift(Gift) {
     const giftName = validateGiftName(Gift.name) ? Gift.name : 'Invalid gift name';
     const giftDescription = Gift.description || 'No description provided';
     const giftPrice = validatePrice(Gift.price) ? `$${Gift.price}` : 'Invalid price';
@@ -26,6 +26,27 @@ export function renderGift(Gift) {
     `;
     return giftCard;
 }
+
+// format and render gift dropdown card for personal view
+export function renderPersonalGift(Gift) {
+    const giftName = validateGiftName(Gift.name) ? Gift.name : 'Invalid gift name';
+    const giftDescription = Gift.description || 'No description provided';
+    const giftPrice = validatePrice(Gift.price) ? `$${Gift.price}` : 'Invalid price';
+    const giftLink = validateLink(Gift.link) ? Gift.link : '#';
+    const giftCard = `
+    <div class="dropdown">
+        <p class="dropDownText">${giftName}</p>
+        <div class="dropdown-content">
+            <p>${giftDescription}</p>
+            <p>${giftPrice}</p>
+            <a href="${giftLink}" target="_blank">Link</a>
+            <button class="edit-button" data-gift-id="${Gift.id}">Edit</button>
+            <button class="delete-button" data-gift-id="${Gift.id}">Delete</button>
+        </div>
+    </div>
+    `;
+    return giftCard;
+};
 
 // gift validation
 function validateGiftName(giftName) {
