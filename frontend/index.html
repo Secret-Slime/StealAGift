@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Steal A Gift - Secret Santa App</title>
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <!-- SPA root container -->    
-    <div class="main-content"></div>
+    <header>
+        <h1>🎁 Steal A Gift</h1>
+        <nav id="nav">
+            <button id="loginBtn" onclick="showLogin()">Login</button>
+            <button id="registerBtn" onclick="showRegister()">Register</button>
+            <button id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
+        </nav>
+    </header>
+
+    <!-- SPA root container -->
+    <main id="app"></main>
+
+    <!-- Load the main JavaScript file -->
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>

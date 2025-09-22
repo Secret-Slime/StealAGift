@@ -1,4 +1,4 @@
-const URL = 'http://localhost:5000';
+const URL = 'http://localhost:3000';
 
 // may have to change how token is stored/retrieved
 function getToken() {

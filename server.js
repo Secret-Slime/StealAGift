@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
-import { User } from './models/user.model.js';
+import { User } from './backend/models/user.model.js';
 
 
 // load enviroment variables
@@ -170,5 +170,13 @@ app.put('/users/:id/receiver', authToken, async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error setting receiver', error: error.message });
     }
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`🚀 Server running on port ${port}`);
+    console.log(`📱 Frontend URL: http://localhost:5173`);
+    console.log(`🔐 JWT Secret: ${process.env.ACCESS_TOKEN_SECRET ? '✅ Set' : '❌ Missing'}`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 

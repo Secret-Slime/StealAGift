@@ -1,32 +1,4 @@
-import User from '../backend/models/user.model.js';
-import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
-import { getUserId } from 'storage.js';
-
-// randomly pick reciever
-export async function pickReciever() {
-    try {
-        const users = await User.find({}, { username: 1, picked: 1 });
-        const currentUser = await User.findById(getUserId());
-        
-        if (User.picked === false && User._Id !== currentUser._Id) {
-            const shuffledUsers = users.sort(() => 0.5 - Math.random());
-            const Receiver = shuffledUsers[Math.floor(Math.random() * shuffledUsers.length)]
-            Receiver.picked = true;
-            await Receiver.save();
-            currentUser.receiver = Receiver.username;
-            await currentUser.save();
-            return res.status(200).json({ message: "You've got ", receiver: Receiver.username + '!' });
-        }
-        if (users.length < 2) {
-            return res.status(400).json({ message: 'Not enough users to pick from' });
-        }
-    } catch (error) {
-        return res.status(500).json({ message: 'Error fetching users', error: error.message });
-    }
-}
-
-// Registration and login validation
+// User validation functions
 export function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -37,8 +9,32 @@ export function validatePassword(password) {
     const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return re.test(String(password));
 }
+
 export function validateUsername(username) {
     // Minimum three characters, only letters, numbers, underscores, and hyphens
     const re = /^[a-zA-Z0-9_-]{3,}$/;
     return re.test(String(username));
 }
+
+// Simple receiver assignment (client-side simulation)
+export async function pickReceiver() {
+    try {
+        // In a real implementation, this would call an API endpoint
+        // For now, we'll simulate the receiver assignment
+        const receivers = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank'];
+        const currentReceiver = localStorage.getItem('receiver');
+
+        if (!currentReceiver) {
+            const availableReceivers = receivers.filter(r => r !== localStorage.getItem('username'));
+            const randomReceiver = availableReceivers[Math.floor(Math.random() * availableReceivers.length)];
+            localStorage.setItem('receiver', randomReceiver);
+            return { receiver: randomReceiver };
+        }
+
+        return { receiver: currentReceiver };
+    } catch (error) {
+        throw new Error('Error picking receiver: ' + error.message);
+    }
+}
+
+

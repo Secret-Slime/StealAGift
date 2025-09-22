@@ -1,6 +1,6 @@
-import { addGift, getUserId, getGifts } from './storage.js';
+import { addGift, getUserId, getGifts, loginUser } from './storage.js';
 import { Gift, renderRecieverGift, renderPersonalGift } from './gift.js';
-import { pickReciever } from './user.js';
+import { pickReceiver } from './user.js';
 
 //html gift form
 let giftFormHTML = `
@@ -121,7 +121,7 @@ export async function loadUndefinedRecieverView() {
     document.getElementById('pickRecieverButton').addEventListener('click', async (e) => {
         e.preventDefault();
         try {
-            const response = await pickReciever();
+            const response = await pickReceiver();
             localStorage.setItem('reciever', response.receiver);
             alert("You've got " + response.receiver + '!');
             loadDefinedRecieverView(getUserId());
@@ -139,24 +139,31 @@ export async function loadLoginForm() {
         e.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+
+        // Store username for later use
+        localStorage.setItem('username', username);
+
         try {
             const response = await loginUser(username, password);
             localStorage.setItem('userId', response.userId);
-            let receiverStatus = localStorage.getItem('reciever');
+            localStorage.setItem('token', response.accessToken);
+
+            let receiverStatus = localStorage.getItem('receiver');
             alert('Login successful');
+
             // redirect to receiver page or gift form after login
-            if (receiverStatus === 'null') {
-                // load view to pick reciever if reciever is not defined
-            }
-            else {
-                // load gift form if reciever is defined
+            if (receiverStatus === 'null' || !receiverStatus) {
+                // load view to pick receiver if receiver is not defined
+                loadUndefinedRecieverView();
+            } else {
+                // load gift form if receiver is defined
                 loadGiftForm();
             }
         } catch (error) {
             alert('Error logging in: ' + error.message);
             console.error('Error logging in:', error);
         }
-    });    
+    });
 };
 
 // load registration form and handle submission
