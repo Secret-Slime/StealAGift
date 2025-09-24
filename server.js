@@ -11,7 +11,7 @@ import { User } from './backend/models/user.model.js';
 // load enviroment variables
 dotenv.config();
 const app = express();
-const port = 3000;
+const port = 8000;
 
 // mongoDB connection setup from .env
 const { MONGO_USER, MONGO_PASSWORD, MONGO_DB, MONGO_CLUSTER } = process.env;
@@ -29,7 +29,7 @@ mongoose.connect(mongoURI)
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Adjust to frontend location as needed
+    origin: 'http://localhost:3000', // Adjust to frontend location as needed
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }))
@@ -175,7 +175,7 @@ app.put('/users/:id/receiver', authToken, async (req, res) => {
 // Start the server
 app.listen(port, () => {
     console.log(`🚀 Server running on port ${port}`);
-    console.log(`📱 Frontend URL: http://localhost:5173`);
+    console.log(`📱 Frontend URL: http://localhost:3000`);
     console.log(`🔐 JWT Secret: ${process.env.ACCESS_TOKEN_SECRET ? '✅ Set' : '❌ Missing'}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
